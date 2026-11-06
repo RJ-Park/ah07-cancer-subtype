@@ -7,14 +7,13 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 - 일정: 11/11(수) 모든 제출 완료 → 11/12 리허설 → 11/13 발표
 - 팀 기준 점수: **CV Macro F1 0.3209** (`notebooks/J_leader/00_baseline.ipynb`, XGBoost + 기본 피처)
 
-> 처음 왔다면 **[AI_RULES.md](AI_RULES.md)** 부터 읽어 주세요. 누수 하나면 실격이에요.
-> **AI로 코드를 짤 때는 AI_RULES.md 안의 안내문을 AI에게 통째로 붙여넣고 시작해요.** 그래야 모든 팀원의 AI가 같은 규칙, 같은 함수, 같은 폴더 구조로 코드를 짜요. (Claude Code, Codex, Copilot은 `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`로 자동 인식해요.)
+> 처음 왔다면 **[docs/coding_rules.md](docs/coding_rules.md)(팀 코딩 규칙)** 부터 읽어 주세요. 누수 하나면 수상 제외예요.
 
 ## 폴더 구조
 
 | 경로 | 내용 | 수정하는 사람 | 깃허브 |
 |---|---|---|---|
-| `AI_RULES.md` | AI에게 먼저 붙여넣는 규칙 | ① 장성은 | 올림 |
+| `docs/coding_rules.md` | 팀 코딩 규칙 (누수 방지, 공통 함수, 실험 순서) | ① 장성은 | 올림 |
 | `data/` | 대회 csv 3개 (각자 넣기) | - | **안 올림** |
 | `src/config.py` | seed, fold 수, 경로 | ④ 박유정 | 올림 |
 | `src/data_loader.py` | 데이터 불러오기 | ④ 박유정 | 올림 |
