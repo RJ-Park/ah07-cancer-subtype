@@ -8,6 +8,7 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 - 팀 기준 점수: **CV Macro F1 0.3209** (`notebooks/J_leader/00_baseline.ipynb`, XGBoost + 기본 피처)
 
 > 처음 왔다면 **[AI_RULES.md](AI_RULES.md)** 부터 읽어 주세요. 누수 하나면 실격이에요.
+> **AI로 코드를 짤 때는 AI_RULES.md 안의 안내문을 AI에게 통째로 붙여넣고 시작해요.** 그래야 모든 팀원의 AI가 같은 규칙, 같은 함수, 같은 폴더 구조로 코드를 짜요. (Claude Code, Codex, Copilot은 `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`로 자동 인식해요.)
 
 ## 폴더 구조
 
