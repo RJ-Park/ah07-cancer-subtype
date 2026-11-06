@@ -219,6 +219,14 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Competition data (do not upload)
-data/
+# Competition data (do not upload) - keep only the empty folder
+data/*
+!data/.gitkeep
 *.csv
+# ...except experiment logs, which the team shares
+!experiments/*.csv
+
+# Trained models and submission files (too large / not shared)
+models/*
+!models/.gitkeep
+submissions/
