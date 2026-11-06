@@ -229,4 +229,10 @@ data/*
 # Trained models and submission files (too large / not shared)
 models/*
 !models/.gitkeep
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.cbm
 submissions/
+catboost_info/
