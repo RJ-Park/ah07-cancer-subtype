@@ -47,7 +47,7 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 1. 깃허브 레포 페이지 왼쪽 위 브랜치가 **develop**인지 확인하고, **Code → Download ZIP**으로 받아 압축을 풀어요.
 2. 폴더 이름을 `ah07-cancer-subtype`으로 맞추고, 구글 드라이브 `내 드라이브`에 통째로 올려요. 그 안 `data/`에 csv를 넣어요.
 3. 드라이브에서 자기 폴더의 노트북(예: `notebooks/A_model/03_models.ipynb`)을 Colab으로 열고 위에서부터 실행해요. 첫 셀이 드라이브를 자동으로 연결해요.
-4. 작업이 끝나면 **파일 → GitHub에 사본 저장**을 눌러요. 브랜치는 **이번 작업용 새 브랜치 이름**(예: `feature/A-lgbm`), 경로는 `notebooks/자기폴더/파일이름`으로 올려요. 처음 한 번은 깃허브 권한 허용이 필요하고, "비공개 저장소 포함"에 체크해야 레포가 보여요.
+4. 작업이 끝나면 **파일 → GitHub에 사본 저장**을 눌러요. 브랜치는 **이번 작업용 새 브랜치 이름**(예: `feature/model-rj_261109`), 경로는 `notebooks/자기폴더/파일이름`으로 올려요. 처음 한 번은 깃허브 권한 허용이 필요하고, "비공개 저장소 포함"에 체크해야 레포가 보여요.
 5. **기록표와 예측 파일은 Colab에서 바로 못 올려요.** "GitHub에 사본 저장"은 노트북만 올리기 때문이에요. 깃허브 레포 페이지에서 이번 작업 브랜치를 고르고 → `experiments/` 폴더 → **Add file → Upload files**로 드라이브에 생긴 `log_자기이름.csv`(그리고 `preds/` 안 자기 파일)를 끌어다 올려요.
 6. 깃허브 레포 페이지에서 **Pull request**를 만들어요 (아래 "브랜치와 PR" 참고).
 7. 다른 사람의 `src/` 변경이 develop에 합쳐졌다면, develop 브랜치 ZIP을 다시 받아 `src/` 폴더만 바꿔 넣어요.
@@ -106,17 +106,19 @@ save_predictions(owner="A_model", name="xgb_depth8", oof_proba=cv["oof_proba"],
 **작업 하나마다 새 브랜치를 만들고, 합치면 지워요.** 충돌은 "사람별 폴더" 규칙으로 막아요.
 
 ```
-develop ─(새 브랜치)→ feature/H-eda ─PR(팀원 1명 승인)→ develop ─(최종, 팀장)→ main
+develop ─(새 브랜치)→ feature/data-○○_261109 ─PR(팀원 1명 승인)→ develop ─(최종, 팀장)→ main
 ```
 
 | 브랜치 | 용도 | 누가 |
 |---|---|---|
 | `main` | 최종 제출본만 | 팀장이 develop에서 합침 (11/11) |
 | `develop` | 팀이 같이 쓰는 최신본 | PR로만 합침 (직접 push 금지) |
-| `feature/이니셜-작업내용` | 작업 하나 | 본인. 합친 뒤 삭제 |
+| `feature/역할-약자_날짜` | 그날의 작업 | 본인. 합친 뒤 삭제 |
 
-**브랜치 이름:** `feature/이니셜-작업내용` (이니셜: J 장성은 · H 홍시윤 · A 안주형 · P 박유정)
-예) `feature/H-eda`, `feature/H-mutation-type`, `feature/A-lgbm`, `feature/P-logreg`
+**브랜치 이름:** `feature/역할-약자_날짜` (날짜는 YYMMDD, 약자는 각자 정한 것)
+- 역할: `leader`(① 장성은) · `data`(② 홍시윤) · `model`(③ 안주형) · `light`(④ 박유정)
+- 예) `feature/model-rj_261109`, `feature/data-○○_261109`
+- 같은 날 작업이 여러 개면 뒤에 붙여요: `feature/model-rj_261109-lgbm`
 
 **PR 규칙:** develop으로 PR을 올리면 **본인 말고 팀원 아무나 1명**이 PR 양식의 누수 체크리스트를 보고 Approve → Merge → **Delete branch** 버튼으로 브랜치 삭제. 누수가 애매하면 팀장에게 넘겨요.
 
@@ -128,15 +130,15 @@ git checkout develop
 git pull origin develop
 ```
 ```bash
-git checkout -b feature/H-eda
+git checkout -b feature/model-rj_261109
 ```
 작업 → 자기 폴더 파일만 add → commit → push
 ```bash
-git push origin feature/H-eda
+git push origin feature/model-rj_261109
 ```
 그다음 깃허브에서 **Compare & pull request** → base가 **develop**인지 확인 → PR 생성.
 
-**Colab:** "GitHub에 사본 저장"할 때 브랜치 칸에 **새 이름**(`feature/H-eda`)을 쓰면 develop에서 새 브랜치가 만들어져요. 다음 저장도 같은 이름으로 하면 같은 브랜치에 쌓여요.
+**Colab:** "GitHub에 사본 저장"할 때 브랜치 칸에 **새 이름**(`feature/model-rj_261109`)을 쓰면 develop에서 새 브랜치가 만들어져요. 다음 저장도 같은 이름으로 하면 같은 브랜치에 쌓여요.
 
 ## 협업 규칙
 
