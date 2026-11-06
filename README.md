@@ -47,8 +47,8 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 1. 깃허브 레포 페이지 왼쪽 위 브랜치가 **develop**인지 확인하고, **Code → Download ZIP**으로 받아 압축을 풀어요.
 2. 폴더 이름을 `ah07-cancer-subtype`으로 맞추고, 구글 드라이브 `내 드라이브`에 통째로 올려요. 그 안 `data/`에 csv를 넣어요.
 3. 드라이브에서 자기 폴더의 노트북(예: `notebooks/A_model/03_models.ipynb`)을 Colab으로 열고 위에서부터 실행해요. 첫 셀이 드라이브를 자동으로 연결해요.
-4. 작업이 끝나면 **파일 → GitHub에 사본 저장**을 눌러요. 브랜치는 **자기 브랜치**(예: `feature/A_model`), 경로는 `notebooks/자기폴더/파일이름`으로 올려요. 처음 한 번은 깃허브 권한 허용이 필요하고, "비공개 저장소 포함"에 체크해야 레포가 보여요.
-5. **기록표와 예측 파일은 Colab에서 바로 못 올려요.** "GitHub에 사본 저장"은 노트북만 올리기 때문이에요. 깃허브 레포 페이지에서 자기 브랜치를 고르고 → `experiments/` 폴더 → **Add file → Upload files**로 드라이브에 생긴 `log_자기이름.csv`(그리고 `preds/` 안 자기 파일)를 끌어다 올려요.
+4. 작업이 끝나면 **파일 → GitHub에 사본 저장**을 눌러요. 브랜치는 **이번 작업용 새 브랜치 이름**(예: `feat/model_A_1109`), 경로는 `notebooks/자기폴더/파일이름`으로 올려요. 처음 한 번은 깃허브 권한 허용이 필요하고, "비공개 저장소 포함"에 체크해야 레포가 보여요.
+5. **기록표와 예측 파일은 Colab에서 바로 못 올려요.** "GitHub에 사본 저장"은 노트북만 올리기 때문이에요. 깃허브 레포 페이지에서 이번 작업 브랜치를 고르고 → `experiments/` 폴더 → **Add file → Upload files**로 드라이브에 생긴 `log_자기이름.csv`(그리고 `preds/` 안 자기 파일)를 끌어다 올려요.
 6. 깃허브 레포 페이지에서 **Pull request**를 만들어요 (아래 "브랜치와 PR" 참고).
 7. 다른 사람의 `src/` 변경이 develop에 합쳐졌다면, develop 브랜치 ZIP을 다시 받아 `src/` 폴더만 바꿔 넣어요.
 
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 ```bash
 git config --local commit.template .github/commit_template.txt
 ```
-그다음 자기 브랜치로 옮겨서 작업해요 (아래 "브랜치와 PR").
+그다음 작업마다 새 브랜치를 만들어 작업해요 (아래 "브랜치와 PR").
 
 ## 실험하는 법
 
@@ -103,30 +103,49 @@ save_predictions(owner="A_model", name="xgb_depth8", oof_proba=cv["oof_proba"],
 
 ## 브랜치와 PR
 
+**작업 하나마다 새 브랜치를 만들고, 합치면 지워요.** 충돌은 "사람별 폴더" 규칙으로 막아요.
+
 ```
-feature/이니셜_역할  ──PR(1명 승인)──▶  develop  ──(최종, 팀장)──▶  main
+develop ─(새 브랜치)→ feat/data_H_1109 ─PR(팀원 1명 승인)→ develop ─(최종, 팀장)→ main
 ```
 
-| 브랜치 | 용도 | 누가 올리나 |
+| 브랜치 | 용도 | 누가 |
 |---|---|---|
 | `main` | 최종 제출본만 | 팀장이 develop에서 합침 (11/11) |
 | `develop` | 팀이 같이 쓰는 최신본 | PR로만 합침 (직접 push 금지) |
-| `feature/J_leader` · `feature/H_data` · `feature/A_model` · `feature/P_light` | 각자 작업 | 본인 |
+| `feat/역할_성이니셜_월일` | 그날의 작업 | 본인. 합친 뒤 삭제 |
 
-**PR 규칙:** develop으로 PR을 올리면 **본인 말고 팀원 아무나 1명**이 PR 템플릿의 누수 체크리스트를 보고 Approve → 병합해요. 누수가 애매하면 팀장에게 넘겨요.
+**브랜치 이름:** `feat/역할_성이니셜_월일` (월일은 4자리, 예: 11월 9일 → `1109`)
 
-**VS Code에서 매일 하는 순서**
+| 팀원 | 예시 |
+|---|---|
+| ① 장성은 | `feat/leader_J_1109` |
+| ② 홍시윤 | `feat/data_H_1109` |
+| ③ 안주형 | `feat/model_A_1109` |
+| ④ 박유정 | `feat/light_P_1109` |
+
+- 같은 날 두 번째 브랜치부터는 뒤에 번호: `feat/model_A_1109_2`
+- 팀 공통 문서 수정처럼 특정인의 작업이 아니면: `feat/docs_1109`
+
+**PR 규칙:** develop으로 PR을 올리면 **본인 말고 팀원 아무나 1명**이 PR 양식의 누수 체크리스트를 보고 Approve → Merge → **Delete branch** 버튼으로 브랜치 삭제. 누수가 애매하면 팀장에게 넘겨요.
+
+**VS Code: 작업 하나마다 이 순서**
 ```bash
-git checkout feature/A_model
+git checkout develop
 ```
 ```bash
 git pull origin develop
 ```
-작업 → 자기 파일만 add → commit → push
 ```bash
-git push origin feature/A_model
+git checkout -b feat/model_A_1109
 ```
-그다음 깃허브에서 **Compare & pull request** → base를 **develop**으로 → PR 생성.
+작업 → 자기 폴더 파일만 add → commit → push
+```bash
+git push origin feat/model_A_1109
+```
+그다음 깃허브에서 **Compare & pull request** → base가 **develop**인지 확인 → PR 생성.
+
+**Colab:** "GitHub에 사본 저장"할 때 브랜치 칸에 **새 이름**(`feat/model_A_1109`)을 쓰면 develop에서 새 브랜치가 만들어져요. 다음 저장도 같은 이름으로 하면 같은 브랜치에 쌓여요.
 
 ## 협업 규칙
 
