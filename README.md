@@ -24,12 +24,15 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 | `src/prediction.py` | 제출 파일 만들기 | ④ 박유정 | 올림 |
 | `notebooks/J_leader/` | 00_baseline (팀 기준 점수) | ① 장성은 | 올림 |
 | `notebooks/H_data/` | 01_eda, 02_features | ② 홍시윤 | 올림 |
-| `notebooks/A_model/` | 03_models (+ 앙상블) | ③ 안주형 | 올림 |
+| `notebooks/A_model/` | 03_models, 05_ensemble | ③ 안주형 | 올림 |
 | `notebooks/P_light/` | 04_lightweight | ④ 박유정 | 올림 |
 | `experiments/log_*.csv` | 실험 기록 (사람별 1개) | 각자 자기 파일 | 올림 |
+| `experiments/preds/` | 앙상블 후보의 예측 확률 (`save_predictions()`) | 각자 자기 파일 | 올림 |
 | `reports/figures/` | 발표용 그래프 | 전원 | 올림 |
-| `submit/` | 최종 제출용 통합 파일 1개 | ④ 박유정 | 올림 |
-| `docs/` | 조사 자료, 확정된 역할분담 (md) | 전원 | 올림 |
+| `submit/final_solution.ipynb` | 최종 제출 파일 틀 (각자 자기 칸만 채움) | ④ 박유정 | 올림 |
+| `docs/team_plan.md` | 팀 운영 확정본 (역할·일정·규칙) | ① 장성은 | 올림 |
+| `docs/ngs_research.md` | NGS·유전체 조사 | ② 홍시윤 | 올림 |
+| `docs/service_plan.md` | 서비스 기획 | ① 장성은 | 올림 |
 | `models/` | 학습된 모델 파일 | - | **안 올림** |
 | `submissions/` | 제출 csv | - | **안 올림** |
 
@@ -45,8 +48,9 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 2. 폴더 이름을 `ah07-cancer-subtype`으로 맞추고, 구글 드라이브 `내 드라이브`에 통째로 올려요. 그 안 `data/`에 csv를 넣어요.
 3. 드라이브에서 자기 폴더의 노트북(예: `notebooks/A_model/03_models.ipynb`)을 Colab으로 열고 위에서부터 실행해요. 첫 셀이 드라이브를 자동으로 연결해요.
 4. 작업이 끝나면 **파일 → GitHub에 사본 저장**을 눌러요. 브랜치는 **자기 브랜치**(예: `feature/A_model`), 경로는 `notebooks/자기폴더/파일이름`으로 올려요. 처음 한 번은 깃허브 권한 허용이 필요하고, "비공개 저장소 포함"에 체크해야 레포가 보여요.
-5. 깃허브 레포 페이지에서 **Pull request**를 만들어요 (아래 "브랜치와 PR" 참고).
-6. 다른 사람의 `src/` 변경이 develop에 합쳐졌다면, develop 브랜치 ZIP을 다시 받아 `src/` 폴더만 바꿔 넣어요.
+5. **기록표와 예측 파일은 Colab에서 바로 못 올려요.** "GitHub에 사본 저장"은 노트북만 올리기 때문이에요. 깃허브 레포 페이지에서 자기 브랜치를 고르고 → `experiments/` 폴더 → **Add file → Upload files**로 드라이브에 생긴 `log_자기이름.csv`(그리고 `preds/` 안 자기 파일)를 끌어다 올려요.
+6. 깃허브 레포 페이지에서 **Pull request**를 만들어요 (아래 "브랜치와 PR" 참고).
+7. 다른 사람의 `src/` 변경이 develop에 합쳐졌다면, develop 브랜치 ZIP을 다시 받아 `src/` 폴더만 바꿔 넣어요.
 
 ### 2-B. VS Code / Jupyter (로컬)
 ```bash
@@ -79,6 +83,23 @@ per_class_f1(y, cv["oof"], le.classes_)     # 어떤 클래스가 약한지
 log_result(owner="A_model", notebook="03_models.ipynb", experiment="xgb_depth8",
            features="basic", model="XGBoost", params=PARAMS, cv=cv)   # 기록
 ```
+
+**앙상블 후보가 된 모델은 예측도 저장해요** (`notebooks/A_model/05_ensemble.ipynb`에서 섞어요)
+```python
+final = pipe.fit(X, y)                                   # 전체 train으로 학습
+test_proba = final.predict_proba(test.drop(columns=["ID"]))
+save_predictions(owner="A_model", name="xgb_depth8", oof_proba=cv["oof_proba"],
+                 test_proba=test_proba, classes=le.classes_, cv=cv)
+```
+
+**시간 아끼는 법**
+- 코드가 돌아가는지만 볼 때: `run_cv(pipe, X, y, folds=folds[:1])` (1개 fold). **기록은 5-fold로만** 해요.
+- 5-fold 베이스라인은 6코어 PC에서 약 10분이고, Colab 무료 CPU(2코어)는 더 느려요. 무거운 실험은 하루 일정에 미리 넣어 두세요.
+
+**재현성 주의** (최종 코드 검증에서 점수가 재현돼야 해요)
+- 모든 모델에 `random_state=SEED` (CatBoost는 `random_seed=SEED`)를 넣어요.
+- LightGBM은 `deterministic=True, force_row_wise=True`를 같이 넣어요 (멀티스레드에서 결과가 미세하게 달라질 수 있어요).
+- 최종 제출에 쓸 모델은 GPU 말고 CPU로 학습해요.
 
 ## 브랜치와 PR
 

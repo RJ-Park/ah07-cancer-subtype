@@ -23,9 +23,9 @@
 - 전처리와 모델은 sklearn Pipeline으로 묶어서 fold 안에서만 fit 되게 해.
 
 [검증과 재현]
-- 레포 구조: src/config.py(SEED, DATA_DIR), src/data_loader.py(load_data, split_xy, encode_target), src/preprocessing.py(basic_transformer, binarize_mutations), src/features.py(mutation_count 등 검증된 피처), src/validation.py(get_folds, run_cv, balanced_weights), src/evaluation.py(macro_f1, per_class_f1, log_result), src/prediction.py(make_submission). 이 함수들을 그대로 써.
+- 레포 구조: src/config.py(SEED, DATA_DIR), src/data_loader.py(load_data, split_xy, encode_target), src/preprocessing.py(basic_transformer, binarize_mutations), src/features.py(mutation_count 등 검증된 피처), src/validation.py(get_folds, run_cv, balanced_weights), src/evaluation.py(macro_f1, per_class_f1, log_result, save_predictions, load_predictions), src/prediction.py(make_submission). 이 함수들을 그대로 써.
 - 점수는 반드시 get_folds(), run_cv()로 계산해 (5-fold Stratified K-Fold, SEED=42, Macro F1). 결과는 log_result()로 기록해.
-- 모든 난수에 seed를 고정해 (set_seed(SEED), 모델 random_state=SEED).
+- 모든 난수에 seed를 고정해 (set_seed(SEED), 모델 random_state=SEED, CatBoost는 random_seed=SEED, LightGBM은 deterministic=True와 force_row_wise=True도 같이). 최종 제출 모델은 CPU로 학습해.
 - 하이퍼파라미터는 코드에 숫자로 직접 적어.
 - 데이터 경로는 src/config.py 의 DATA_DIR 하나로만 다뤄 (최종 제출 코드에서는 "/data").
 - 내 폴더(notebooks/이니셜_역할/)의 노트북만 수정하고, src/ 파일은 수정하지 마 (수정이 필요하면 나에게 먼저 말해).
