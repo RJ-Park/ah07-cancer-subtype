@@ -48,12 +48,12 @@ def mutation_type_counts(X):
         "n_other",
     ]
 
-    # WT 및 결측치를 제외하고 변이 문자열 추출
-    mutations = X.stack()
+    # 결측치와 WT를 제외한 실제 변이만 추출
+    mutations = X.stack().dropna()
     mutations = mutations[mutations != "WT"]
 
     # 한 셀에 여러 변이가 있는 경우 각각 분리
-    tokens = mutations.astype(str).str.split().explode()
+    tokens = mutations.astype(str).str.split().explode().dropna()
 
     # 변이 표기 패턴에 따라 유형 분류
     def classify(token):
