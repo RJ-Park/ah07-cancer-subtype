@@ -59,17 +59,73 @@ def twin_groups(X: pd.DataFrame, y, classes=None):
     return groups
 
 
-def get_folds(y, X=None, classes=None, n_splits=N_SPLITS, seed=SEED):
-    """모든 팀원이 같은 원본 X, y, classes, seed를 사용해야 같은 Fold가 나옴."""
+def get_folds(
+    y,
+    X=None,
+    classes=None,
+    n_splits=N_SPLITS,
+    seed=SEED
+):
+    """
+    팀 공통 StratifiedGroupKFold.
+
+    get_folds(y)
+        -> train.csv를 읽어 원본 X와 클래스 순서를 가져옴
+
+    get_folds(y, X=X, classes=le.classes_)
+        -> 전달받은 X와 클래스를 사용
+
+    두 방식은 동일한 Fold를 생성해야 함.
+    """
+    from .config import DATA_DIR, ID_COL, TARGET
+    from .data_loader import split_xy, encode_target
+
+    y = np.asarray(y).ravel()
+
     if X is None:
-        raise ValueError("쌍둥이 누수 방지를 위해 get_folds(y, X=X, classes=le.classes_)로 호출하세요")
-    labels = np.asarray(y)
-    groups = twin_groups(X, labels, classes=classes)
-    splitter = StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=seed)
-    folds = list(splitter.split(np.zeros(len(labels)), labels, groups=groups))
-    for tr, va in folds:
-        if set(groups[tr]) & set(groups[va]):
-            raise AssertionError("쌍둥이 그룹이 Train/Validation에 나뉘었습니다")
+        # test.csv는 읽지 않고 train만 사용
+        train = pd.read_csv(DATA_DIR / "train.csv")
+
+        if len(y) != len(train):
+            raise ValueError(
+                f"y 길이({len(y)})와 "
+                f"train 길이({len(train)})가 다릅니다."
+            )
+
+        X, y_raw = split_xy(train)
+        _, le = encode_target(y_raw)
+
+        if classes is None:
+            classes = le.classes_
+
+    else:
+        if len(y) != len(X):
+            raise ValueError(
+                f"y 길이({len(y)})와 "
+                f"X 길이({len(X)})가 다릅니다."
+            )
+
+        if classes is None:
+            raise ValueError(
+                "X를 직접 전달할 때는 classes=le.classes_도 지정하세요."
+            )
+
+    groups = twin_groups(X, y, classes=classes)
+
+    sgkf = StratifiedGroupKFold(
+        n_splits=n_splits,
+        shuffle=True,
+        random_state=seed
+    )
+
+    folds = list(sgkf.split(X, y, groups=groups))
+
+    for train_idx, val_idx in folds:
+        if set(groups[train_idx]) & set(groups[val_idx]):
+            raise RuntimeError(
+                "동일 그룹이 학습/검증에 동시에 포함되었습니다."
+            )
+
     return folds
 
 
