@@ -85,3 +85,91 @@ def mutation_type_counts(X):
     ).astype("int32")
 
     return result
+
+
+def amino_acid_pair_counts(X: pd.DataFrame) -> pd.DataFrame:
+    """
+    환자별 아미노산 치환 쌍 개수 계산.
+
+    예:
+        V600E -> aa_V_E
+        R132H -> aa_R_H
+
+    - Missense와 synonymous 형태의 치환 표기만 집계
+    - WT, 결측치 제외
+    - 한 셀에 여러 변이가 있으면 각각 집계
+    - 전체 아미노산 치환 쌍을 고정된 컬럼으로 반환
+    - log1p는 모델 입력 단계에서 적용
+    """
+    import re
+
+    amino_acids = "ACDEFGHIKLMNPQRSTVWY"
+    pairs = [
+        f"aa_{a}_{b}"
+        for a in amino_acids
+        for b in amino_acids
+    ]
+
+    # WT와 결측치 제외
+    mutations = X.stack().dropna()
+    mutations = mutations[mutations != "WT"]
+
+    # 한 셀에 여러 변이가 있으면 분리
+    tokens = mutations.astype(str).str.split().explode().dropna()
+
+    # 아미노산 치환 표기 추출
+    matches = tokens.str.extract(r"^([A-Z])\d+([A-Z])$")
+
+    valid = (
+        matches[0].isin(list(amino_acids))
+        & matches[1].isin(list(amino_acids))
+        & (matches[0] != matches[1])
+    )
+    matches = matches.loc[valid]
+
+    # 치환 쌍 이름 생성
+    pair_names = "aa_" + matches[0] + "_" + matches[1]
+
+    # 환자별 치환 쌍 개수
+    counts = pd.crosstab(
+        pair_names.index.get_level_values(0),
+        pair_names
+    )
+
+    return counts.reindex(
+        index=X.index,
+        columns=pairs,
+        fill_value=0
+    ).astype("int32")
+
+
+def gene_truncation_flags(X: pd.DataFrame) -> pd.DataFrame:
+    """
+    유전자별 단백질 절단형 변이 여부.
+
+    - Nonsense: R213*, E237* 등
+    - Frameshift: fs가 포함된 변이 표기
+    - 해당 유전자에 하나라도 존재하면 1, 없으면 0
+    - 원본 유전자 컬럼별로 피처 생성
+    """
+    import re
+
+    def has_truncation(value):
+        if pd.isna(value):
+            return 0
+
+        tokens = str(value).split()
+
+        return int(any(
+            "fs" in token.lower()
+            or re.fullmatch(r"[A-Z]\d+\*", token)
+            for token in tokens
+        ))
+
+    result = X.apply(lambda col: col.map(has_truncation))
+
+    result.columns = [
+        f"trunc_{col}" for col in X.columns
+    ]
+
+    return result.astype("int8")
