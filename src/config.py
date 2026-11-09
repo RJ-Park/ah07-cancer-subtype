@@ -13,7 +13,7 @@ import numpy as np
 # ── 재현성 ───────────────────────────────────────────
 SEED = 42
 N_SPLITS = 5
-
+DEVICE = "auto" # auto / cpu / cuda
 # ── 컬럼 ────────────────────────────────────────────
 TARGET = "SUBCLASS"
 ID_COL = "ID"
