@@ -1,1 +1,2 @@
 ﻿date,owner,notebook,experiment,features,model,params,cv_mean,cv_std,lb_score,notes
+2026-11-09 13:21,P_light,04a_logreg_baseline.ipynb,1109_logreg_C01,binary + log1p(n_mutated),LogisticRegression,"{'C': 0.1, 'max_iter': 2000, 'class_weight': 'balanced'}",0.3947,0.01,,"경량 베이스라인, 리더보드 0.2854"
