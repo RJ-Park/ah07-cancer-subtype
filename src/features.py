@@ -16,3 +16,72 @@ from .preprocessing import binarize_mutations
 def mutation_count(X: pd.DataFrame) -> pd.Series:
     """환자별 변이가 있는 유전자 개수."""
     return binarize_mutations(X).sum(axis=1).rename("n_mutated_genes")
+
+
+# =====================공통 코드 끝=====================
+
+# 변이 유형별 개수 피처 생성
+# 원본 변이 문자열을 기준으로 환자별 변이 유형 개수를 계산
+
+def mutation_type_counts(X):
+    """
+    환자별 변이 유형 개수 계산
+
+    반환 피처:
+    - n_missense
+    - n_synonymous
+    - n_nonsense
+    - n_frameshift
+    - n_other
+
+    주의: 변이 표기 문자열을 기준으로 분류한 값이며,
+    실제 생물학적 기능을 완전히 판정한 결과는 아님.
+    """
+    import re
+    import pandas as pd
+
+    feature_names = [
+        "n_missense",
+        "n_synonymous",
+        "n_nonsense",
+        "n_frameshift",
+        "n_other",
+    ]
+
+    # WT 및 결측치를 제외하고 변이 문자열 추출
+    mutations = X.stack()
+    mutations = mutations[mutations != "WT"]
+
+    # 한 셀에 여러 변이가 있는 경우 각각 분리
+    tokens = mutations.astype(str).str.split().explode()
+
+    # 변이 표기 패턴에 따라 유형 분류
+    def classify(token):
+        if "fs" in token.lower():
+            return "n_frameshift"
+
+        if re.fullmatch(r"[A-Z]\d+\*", token):
+            return "n_nonsense"
+
+        if re.fullmatch(r"[A-Z]\d+[A-Z]", token):
+            if token[0] == token[-1]:
+                return "n_synonymous"
+            return "n_missense"
+
+        return "n_other"
+
+    types = tokens.map(classify)
+
+    # 환자별 변이 유형 개수 집계
+    counts = pd.crosstab(
+        tokens.index.get_level_values(0),
+        types
+    )
+
+    result = counts.reindex(
+        index=X.index,
+        columns=feature_names,
+        fill_value=0
+    ).astype("int32")
+
+    return result
