@@ -2,3 +2,4 @@
 2026-11-09 13:21,P_light,04a_logreg_baseline.ipynb,1109_logreg_C01,binary + log1p(n_mutated),LogisticRegression,"{'C': 0.1, 'max_iter': 2000, 'class_weight': 'balanced'}",0.3947,0.01,,"경량 베이스라인, LB 0.2854 재현 확인"
 2026-11-09 16:06,P_light,04a_logreg_baseline.ipynb,1109_logreg_C01_gkf,binary + log1p(n_mutated),LogisticRegression,"{'C': 0.1, 'max_iter': 2000, 'class_weight': 'balanced'}",0.4089,0.0145,,"경량 베이스라인, 그룹 K-fold, 리더보드 0.2854"
 2026-11-09 16:17,P_light,04a_logreg_baseline.ipynb,1109_logreg_C01_derived_gkf,"binary + log1p(n_mutated, 변이 유형별 개수 5개)",LogisticRegression,"{'C': 0.1, 'max_iter': 2000, 'class_weight': 'balanced'}",0.4221,0.0194,,"③ 최신 XGBoost와 같은 피처, 그룹 K-fold"
+2026-11-10 11:43,P_light,04d_augmented_lr.ipynb,1110_logreg_E_aug_gkf,E + 학습 행 변이 랜덤 삭제 사본 3개 (p=0.5/0.7/0.9),LogisticRegression,"{'keep_probs': (0.5, 0.7, 0.9), 'C': 0.1, 'max_iter': 3000, 'seed': 42}",0.484,0.0102,,"증강 LR, 그룹 K-fold, 비교 기준 LR E 0.4919"
