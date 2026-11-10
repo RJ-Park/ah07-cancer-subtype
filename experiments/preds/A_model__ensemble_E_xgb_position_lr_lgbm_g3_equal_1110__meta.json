@@ -1,0 +1,48 @@
+{
+  "classes": [
+    "ACC",
+    "BLCA",
+    "BRCA",
+    "CESC",
+    "COAD",
+    "DLBC",
+    "GBMLGG",
+    "HNSC",
+    "KIPAN",
+    "KIRC",
+    "LAML",
+    "LGG",
+    "LIHC",
+    "LUAD",
+    "LUSC",
+    "OV",
+    "PAAD",
+    "PCPG",
+    "PRAD",
+    "SARC",
+    "SKCM",
+    "STES",
+    "TGCT",
+    "THCA",
+    "THYM",
+    "UCEC"
+  ],
+  "train_rows": 6201,
+  "test_rows": 2546,
+  "folds": 5,
+  "seed": 42,
+  "model": "3-model equal probability ensemble",
+  "weights": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "sources": [
+    "A_model__xgb_E_depth3_invsqrt_position_ensemble_1110",
+    "A_model__lr_E_position_g3_3ensemble_1110",
+    "A_model__lgbm_g3_hotspot3_bin_exact_1110"
+  ],
+  "dev_cv_delta": 0.0061608148592426915,
+  "holdout_delta": 0.02752965391244211,
+  "status": "passed"
+}
