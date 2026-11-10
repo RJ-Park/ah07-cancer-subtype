@@ -1,0 +1,7 @@
+experiment,hotspot_scale,position_bin,cv_macro_f1,cv_std,model,C,class_weight,n_folds,bin_size,min_patients
+E_hotspot_x3_position_bin,3,True,0.5084633989444136,0.00940404359614318,LogisticRegression,0.1,balanced,5,50,5
+E_hotspot_x1_position_bin,1,True,0.505419211970633,0.00797652734786275,LogisticRegression,0.1,balanced,5,50,5
+E_position_bin,0,True,0.501996942813225,0.009237726236070973,LogisticRegression,0.1,balanced,5,50,5
+E_hotspot_x3,3,False,0.5001077941186626,0.01192169025953415,LogisticRegression,0.1,balanced,5,50,5
+E_hotspot_x1,1,False,0.4942816948432388,0.012994908726431513,LogisticRegression,0.1,balanced,5,50,5
+E_baseline,0,False,0.4919350031964725,0.014135298249614228,LogisticRegression,0.1,balanced,5,50,5
