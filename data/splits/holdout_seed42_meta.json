@@ -1,0 +1,10 @@
+{
+  "seed": 42,
+  "algorithm": "StratifiedGroupKFold first split; full raw row groups",
+  "n_dev": 4960,
+  "n_holdout": 1241,
+  "n_total": 6201,
+  "manifest_sha256": "d4446ba9d382ef8360f0d2de662a2c45496d9a26c1dcc0cbe86a41fdecd3f9fb",
+  "pandas": "3.1.1",
+  "scikit_learn": "1.9.1"
+}
