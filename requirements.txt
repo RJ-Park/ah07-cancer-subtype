@@ -1,10 +1,8 @@
-# 라이브러리 목록
-# TODO(④): 11/06 Colab에서 아래 명령으로 버전을 확인한 뒤, 그 버전으로 고정(==)해 주세요.
-#   import pandas, numpy, sklearn, xgboost; print(pandas.__version__, numpy.__version__, sklearn.__version__, xgboost.__version__)
-# 최종 제출 코드에도 이 버전을 적어야 해요.
-numpy
-pandas
-scikit-learn
-xgboost
-lightgbm
-catboost
+# 라이브러리 목록 (Colab 기준, 2026-11-10 확인)
+# 환경: Python 3.13.18, Linux (Colab)
+# 확인 명령: import numpy, pandas, sklearn, xgboost, scipy; print(각 __version__)
+numpy==2.4.6
+pandas==2.2.3
+scikit-learn==1.6.1
+xgboost==3.4.1
+scipy==1.16.3
