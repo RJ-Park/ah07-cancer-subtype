@@ -1,8 +1,10 @@
-# 라이브러리 목록 (Colab 기준, 2026-11-10 확인)
+# 라이브러리 목록 (Colab 기준, 2026-11-10·11 확인)
 # 환경: Python 3.13.18, Linux (Colab)
-# 확인 명령: import numpy, pandas, sklearn, xgboost, scipy; print(각 __version__)
+# 확인 명령: import numpy, pandas, sklearn, xgboost, lightgbm, scipy; print(각 __version__)
 numpy==2.4.6
 pandas==2.2.3
 scikit-learn==1.6.1
 xgboost==3.4.1
+lightgbm==4.6.0
 scipy==1.16.3
+tqdm==4.67.3
