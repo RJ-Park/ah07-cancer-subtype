@@ -20,6 +20,17 @@ DATA_PATH = ROOT / "data" / "train.csv"
 MANIFEST = ROOT / "data" / "splits" / "holdout_seed42.csv"
 META = ROOT / "data" / "splits" / "holdout_seed42_meta.json"
 
+def manifest_sha256(path: Path) -> str:
+    """Hash CSV consistently across LF/CRLF checkouts.
+
+    The committed legacy metadata stores the CRLF-form hash. Normalize
+    line endings in memory only; never rewrite the manifest itself.
+    """
+    raw = path.read_bytes()
+    normalized = raw.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+    return hashlib.sha256(normalized).hexdigest()
+
+
 def data():
     df = pd.read_csv(DATA_PATH, low_memory=False)
     required = {'ID', 'SUBCLASS'}
@@ -52,7 +63,7 @@ def create():
     manifest.to_csv(MANIFEST,index=False,encoding='utf-8')
     metadata = {'seed':SEED,'algorithm':'StratifiedGroupKFold first split; full raw row groups',
                 'n_dev':len(dev),'n_holdout':len(hold),'n_total':len(df),
-                'manifest_sha256':hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
+                'manifest_sha256':manifest_sha256(MANIFEST),
                 'pandas':pd.__version__}
     import sklearn
     metadata['scikit_learn'] = sklearn.__version__
@@ -64,7 +75,7 @@ def verify():
     if not MANIFEST.exists() or not META.exists():
         raise FileNotFoundError('Ask owner to commit manifest and metadata; do not regenerate')
     meta=json.loads(META.read_text(encoding='utf-8'))
-    assert hashlib.sha256(MANIFEST.read_bytes()).hexdigest()==meta['manifest_sha256'], 'Manifest changed'
+    assert manifest_sha256(MANIFEST) == meta['manifest_sha256'], 'Manifest changed'
     m=pd.read_csv(MANIFEST,dtype={'ID':str,'split':str,'row_signature':str})
     assert len(m)==len(df) and m.ID.is_unique and set(m.split)=={'dev','holdout'}
     assert set(m.ID)==set(df.ID.astype(str)), 'ID sets differ'
