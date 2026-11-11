@@ -1,0 +1,50 @@
+{
+  "model": "candidate1",
+  "classes": [
+    "ACC",
+    "BLCA",
+    "BRCA",
+    "CESC",
+    "COAD",
+    "DLBC",
+    "GBMLGG",
+    "HNSC",
+    "KIPAN",
+    "KIRC",
+    "LAML",
+    "LGG",
+    "LIHC",
+    "LUAD",
+    "LUSC",
+    "OV",
+    "PAAD",
+    "PCPG",
+    "PRAD",
+    "SARC",
+    "SKCM",
+    "STES",
+    "TGCT",
+    "THCA",
+    "THYM",
+    "UCEC"
+  ],
+  "train_rows": 6201,
+  "test_rows": 2546,
+  "seed": 42,
+  "folds": 5,
+  "test_fit": "full_train",
+  "experiment": "12_g3_multihot_signature",
+  "g3_params": null,
+  "cv_mean": 0.5139709559264115,
+  "holdout": {
+    "holdout_f1": 0.5183644007167328,
+    "baseline_holdout_f1": 0.5216563463792439,
+    "delta": -0.003291945662511009,
+    "pass": true
+  },
+  "sources": [
+    "A_model__12_weighted_xgb_E_cpu",
+    "A_model__12_lr_position_bin50",
+    "A_model__12_g3_multihot_signature"
+  ]
+}
