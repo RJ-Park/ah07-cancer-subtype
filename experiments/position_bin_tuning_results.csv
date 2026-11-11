@@ -1,0 +1,5 @@
+experiment,bin_size,min_patients,C,class_weight,dev_cv_macro_f1,holdout_macro_f1
+LR_E_hotspot_x3_position_bin,50,5,0.1,balanced,0.48628390108555275,0.5056976617214255
+LR_E_hotspot_x3_position_bin,25,5,0.1,balanced,0.4927014551878903,0.507226988356422
+LR_E_position_bin,50,5,0.1,balanced,0.48578767981951715,0.4990837609601766
+LR_E_position_bin,25,5,0.1,balanced,0.490053501028849,0.4968635744934597
