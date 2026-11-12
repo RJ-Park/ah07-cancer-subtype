@@ -1,0 +1,9 @@
+﻿experiment_id,notebook,cv_scope,model,feature_base,experiment,cv_mean_macro_f1,cv_std,oof_macro_f1,delta_vs_baseline,holdout_in_cv,notes
+subtype_ablation_01_Baseline_E,notebooks/H_data/06_subtype_feature_ablation.ipynb,full_train_6201,XGBoost_depth3,E,Baseline_E,0.4833,0.0108,0.4842,0.0,True,전체 train CV; 고정 holdout 행이 CV에 포함됨
+subtype_ablation_01_A_kidney,notebooks/H_data/06_subtype_feature_ablation.ipynb,full_train_6201,XGBoost_depth3,E,A_kidney,0.4831,0.0137,0.4846,-0.0001,True,전체 train CV; 고정 holdout 행이 CV에 포함됨
+subtype_ablation_01_B_brain,notebooks/H_data/06_subtype_feature_ablation.ipynb,full_train_6201,XGBoost_depth3,E,B_brain,0.4843,0.0151,0.4857,0.0011,True,전체 train CV; 고정 holdout 행이 CV에 포함됨
+subtype_ablation_01_C_all,notebooks/H_data/06_subtype_feature_ablation.ipynb,full_train_6201,XGBoost_depth3,E,C_all,0.487,0.014,0.4885,0.0038,True,전체 train CV; 고정 holdout 행이 CV에 포함됨
+subtype_ablation_02_Baseline,notebooks/H_data/07_subtype_feature_full_ablation.ipynb,dev_only_4960,XGBoost_depth3,E+Hotspot3+PositionBin50,Baseline,0.4724,0.0189,0.4774,0.0,False,고정 holdout 제외; Position-bin은 fold별 fit
+subtype_ablation_02_D_kidney,notebooks/H_data/07_subtype_feature_full_ablation.ipynb,dev_only_4960,XGBoost_depth3,E+Hotspot3+PositionBin50,D_kidney,0.4649,0.0083,0.4692,-0.0074,False,고정 holdout 제외; Position-bin은 fold별 fit
+subtype_ablation_02_E_brain,notebooks/H_data/07_subtype_feature_full_ablation.ipynb,dev_only_4960,XGBoost_depth3,E+Hotspot3+PositionBin50,E_brain,0.4668,0.0141,0.4709,-0.0056,False,고정 holdout 제외; Position-bin은 fold별 fit
+subtype_ablation_02_F_all,notebooks/H_data/07_subtype_feature_full_ablation.ipynb,dev_only_4960,XGBoost_depth3,E+Hotspot3+PositionBin50,F_all,0.4692,0.0116,0.4734,-0.0031,False,고정 holdout 제외; Position-bin은 fold별 fit
