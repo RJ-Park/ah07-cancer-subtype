@@ -7,6 +7,18 @@ AI 헬스케어 7기 해커톤 · **유전자 변이 정보 기반 암 아형(SU
 - 일정: 11/11(수) 모든 제출 완료 → 11/12 리허설 → 11/13 발표
 - 팀 기준 점수: **CV Macro F1 0.3209** (`notebooks/J_leader/00_baseline.ipynb`, XGBoost + 기본 피처)
 
+## 최종 결과
+
+| 항목 | 내용 |
+|---|---|
+| 데이콘 최종 제출 | 24번, **LB Macro F1 0.43631** |
+| 최종 코드 | [`submit/final_solution.ipynb`](submit/final_solution.ipynb) (파일 하나로 학습부터 예측까지) |
+| 모델 | 가중치 XGBoost(E) + 로지스틱 회귀(E + 위치 구간) + LightGBM g3(E + 핫스팟×3 + 위치 구간 + 정확한 위치), 같은 비중 평균 |
+| 후처리 | 쌍 2단계 판정(`USE_PAIR_TWO_STAGE = True`): KIPAN/KIRC, GBMLGG/LGG 쌍은 확률을 합쳐 다른 암과 비교하고, 쌍 안의 선택은 train 쌍 환자로만 학습한 작은 LR(유전자 10개 + 변이 수)로 정함 |
+| 실행 환경 | Google Colab CPU, Python 3.13.18, [`requirements.txt`](requirements.txt) 버전 |
+| 재현 | 같은 라이브러리 버전의 리눅스 환경(코랩·별도 리눅스)에서 재실행 시 test 2,546명 예측 전부 일치 |
+| 실행 시간 | 코랩 무료 CPU 약 40분 |
+
 > 처음 왔다면 **[docs/coding_rules.md](docs/coding_rules.md)(팀 코딩 규칙)** 부터 읽어 주세요. 누수 하나면 수상 제외예요.
 
 ## 데이터 누수 방지
