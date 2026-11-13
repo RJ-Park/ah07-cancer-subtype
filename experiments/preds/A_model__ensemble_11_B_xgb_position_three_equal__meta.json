@@ -1,0 +1,49 @@
+{
+  "classes": [
+    "ACC",
+    "BLCA",
+    "BRCA",
+    "CESC",
+    "COAD",
+    "DLBC",
+    "GBMLGG",
+    "HNSC",
+    "KIPAN",
+    "KIRC",
+    "LAML",
+    "LGG",
+    "LIHC",
+    "LUAD",
+    "LUSC",
+    "OV",
+    "PAAD",
+    "PCPG",
+    "PRAD",
+    "SARC",
+    "SKCM",
+    "STES",
+    "TGCT",
+    "THCA",
+    "THYM",
+    "UCEC"
+  ],
+  "train_rows": 6201,
+  "test_rows": 2546,
+  "folds": 5,
+  "seed": 42,
+  "test_fit": "full_train",
+  "model": "3-model equal ensemble B",
+  "sources": [
+    "A_model__xgb_position_hotspot3_bin_exact_11",
+    "A_model__lr_position_recomputed_for_B_11",
+    "A_model__lgbm_g3_recomputed_for_B_11"
+  ],
+  "weights": [
+    0.3333333333333333,
+    0.3333333333333333,
+    0.3333333333333333
+  ],
+  "dev_cv_delta": 0.0008981721108030083,
+  "holdout_delta": -0.008314366711293042,
+  "validation_policy": "CV improves and holdout drop <= 0.02"
+}
